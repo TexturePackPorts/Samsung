@@ -1,0 +1,71 @@
+  
+  //# sourceURL=prdt-aff-calc
+  (function prdtAffCalculator() {
+    window.tgtCommonStore = window.tgtCommonStore || {};
+    window.tgtCommonStore["prod-affinity"] = window.tgtCommonStore["prod-affinity"] || {};
+    let pageName = window.tgtCommonStore["prod-affinity"]["curr-page"];
+    
+    function calcProdAff(allCounterData, currPageGrp) {
+      const prdtANames = window.tgtCommonStore["prod-affinity"]["prdt-a-names"];
+      const prdtNames = window.tgtCommonStore["prod-affinity"]["prdt-names"];
+      const currCounterData = allCounterData[currPageGrp+"counter_data"];
+      const counter = pageName+"viewcount";
+      
+      for(const [key, value] of Object.entries(currCounterData)) {
+        if(key !== counter && currCounterData[key] > 0)
+          currCounterData[key]--;
+        else if(key == counter)
+          currCounterData[counter] += 5;
+      }
+      
+      const prdtVcs = prdtANames.map(function toViewCountTotals(aname) {
+        return allCounterData["mlpcounter_data"][aname+"mlpviewcount"] + allCounterData["configcounter_data"][aname+"configviewcount"] + allCounterData["cartcounter_data"][aname+"cartviewcount"];
+      });
+      
+      let affProduct = '';
+      
+      const ttlViews = prdtVcs.reduce((acc, cVal) => acc + cVal);
+      if(ttlViews == 0) affProduct = "no-product";
+      else {
+        const maxVc = Math.max(...prdtVcs);
+        const maxVcIndx = prdtVcs.indexOf(maxVc);
+        affProduct = prdtNames[maxVcIndx];
+      }
+      
+      let tgtParams = {};
+      Object.entries(currCounterData).forEach(([key, val]) => tgtParams["profile."+key] = val);
+      tgtParams["profile.affinityproduct"] = affProduct;
+      //console.log("PZN-317 Prod Aff");
+      //console.log(counter);
+      //console.log(tgtParams);
+      adobe.target.trackEvent({
+        "mbox": "target-prods-affinity", 
+        "params": tgtParams
+      });
+    }
+    
+    function initProdAffCalcs(pageName) {
+      const currPageGrpMatch = pageName.match(/mlp|config|cart/);
+      let currPageGrp = currPageGrpMatch ? currPageGrpMatch[0] : null;
+      if(currPageGrp) {
+        let allCounterData = window.tgtCommonStore["prod-affinity"]["counter-data"];
+        if(allCounterData)
+          calcProdAff(allCounterData, currPageGrp)
+        else {
+          document.documentElement.addEventListener('prod-aff-counter-data', function (e) {
+            calcProdAff(e.detail, currPageGrp)
+          });
+        }
+      }
+    }
+    
+    if(!(window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD)) {    
+      if(!pageName) {
+        document.documentElement.addEventListener("prod-aff-page-name", function (e) {
+          pageName = e.detail;
+          initProdAffCalcs(pageName);
+        });
+      }
+      else initProdAffCalcs(pageName);
+    }
+  })();

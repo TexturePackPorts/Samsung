@@ -1,0 +1,35 @@
+
+    //# sourceURL=pzn-epp-attr-setter
+    function tgtGetCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkForEPP() {
+        clearInterval(eppCheck);
+        if (typeof (tgtGetCookie) == 'function') {
+            var tsgmtCookie = tgtGetCookie('tsgmt');
+            var getUserEPP = '';
+            if (tsgmtCookie != "" && getUserEPP !== tsgmtCookie) {
+                adobe.target.trackEvent({
+                    "mbox": "target-profile-data",
+                    "params": {
+                        "user.userEPPtsgmtValue": tsgmtCookie
+                    }
+                });
+            }
+        }
+    }
+    var eppCheck = window.setInterval(function () {
+        checkForEPP();
+    }, 1000, false);

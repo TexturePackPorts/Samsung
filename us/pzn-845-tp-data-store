@@ -1,0 +1,86 @@
+//# sourceURL=pzn-845-tp-data-store
+(function() {
+    let trendingProducts = [];
+    var rec = {
+        'id': 'SM-R930NZEDXAA',
+        'cta_url': '/us/mobile/wearables/smartwatches/galaxy-watch6-40mm-gold-bt-sm-r930nzedxaa',
+        'name': 'Galaxy Watch6 ',
+        'img_url': 'https://image-us.samsung.com/us/watches/galaxy-watch6/gold/R930-gold/1.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'SM-S928UZKEXAA',
+        'cta_url': '/us/mobile/phones/galaxy-s/galaxy-s24-ultra-256gb-unlocked-sm-s928uzkexaa',
+        'name': 'Galaxy S24 Ultra ',
+        'img_url': 'https://image-us.samsung.com/us/smartphones/galaxy-s24/all-gallery/01_E3_TitaniumBlack_Lockup_1600x1200.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'SM-R510NLVAXAR',
+        'cta_url': '/us/mobile/audio/headphones/galaxy-buds2-pro-bora-purple-sm-r510nlvaxar',
+        'name': 'Galaxy Buds2 Pro ',
+        'img_url': 'https://image-us.samsung.com/us/mobile-audio/galaxy-buds2-pro/gallery/bora-purple/Q4B4B2C-86-SM-R510_001_Front_BoraPurple_RGB-GalleryImage-1600x1200.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'QN85QN90CAFXZA',
+        'cta_url': '/us/televisions-home-theater/tvs/samsung-neo-qled-4k/85-class-qn90c-samsung-neo-qled-4k-smart-tv-2023-qn85qn90cafxza',
+        'name': 'Samsung Neo QLED 4K Smart TV ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/television-home-theater/tvs/03242023/QN90C_85_75_65_55.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'QN65LS03BAFXZA',
+        'cta_url': '/us/televisions-home-theater/tvs/the-frame/65-class-the-frame-qled-4k-smart-tv-2022-qn65ls03bafxza',
+        'name': 'The Frame ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/television-home-theater/tvs/the-frame-limited-edition/11132023-frame/The_Frame22_23.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'HW-Q990CZA',
+        'cta_url': '/us/televisions-home-theater/home-theater/sound-bars/q-series-11-1-4-ch-wireless-dolby-atmos-soundbar-rear-speakers-w-q-symphony-hw-q990c-2023-hw-q990c-za',
+        'name': 'Q Series Soundbar ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/easy-asset/tbsr-9125/03212023/Q990C.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'NP960QGK-KG1US',
+        'cta_url': '/us/computing/galaxy-books/galaxy-book4-pro-360/galaxy-book4-pro-360-16-intel-core-ultra-7-1tb-moonstone-gray-np960qgk-kg1us',
+        'name': 'Galaxy Book4 Pro ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/computing/galaxy-books/gp4-16-360-pro/GB4_Pro_360_16_US_Copilot_Moonstone-Gray_001_Front-1600x1200.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'MU-PE2T0SAM',
+        'cta_url': '/us/computing/memory-storage/portable-solid-state-drives/portable-ssd-t7-shield-usb-3-2-2tb-black-mu-pe2t0s-am',
+        'name': 'Portable SSD T7 USB ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/easy-asset/cbsr-4342/SG22-14K-0813-MKTCreativeMEMORY-T7Shield_BlackMock1-Gallery-1600x1200.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'LS49CG954ENXZA',
+        'cta_url': '/us/computing/monitors/gaming/49-odyssey-g9-dqhd-240hz-1ms-gtg-displayhdr-1000-gaming-monitor-ls49cg954enxza',
+        'name': 'Gaming Monitor ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/computing/monitors/gaming/04162024/LS49CG954ENXZA_V2.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+    var rec = {
+        'id': 'LS49CG954SNXZA',
+        'cta_url': '/us/computing/monitors/gaming/49-odyssey-oled-g95sc-dqhd-neo-quantum-processor-pro-0-03ms-240hz-curved-smart-gaming-monitor-ls49cg954snxza',
+        'name': 'Odyssey gaming monitor ',
+        'img_url': 'https://image-us.samsung.com/SamsungUS/home/computing/monitors/gaming/04162024/LS49CG954SNXZA_V2.jpg?$product-card-small-jpg$'
+    };
+    trendingProducts.push(rec);
+
+    var tgtCommonStore = window.tgtCommonStore || {};
+    if (undefined == tgtCommonStore["pzn-845"])
+        tgtCommonStore["pzn-845"] = {};
+    tgtCommonStore["pzn-845"]["trending-products-data"] = trendingProducts;
+    window.tgtCommonStore = tgtCommonStore;
+
+    const tpInfoEvt = new CustomEvent("pzn-845-trending-products-data",{
+        "detail": trendingProducts
+    });
+    document.documentElement.dispatchEvent(tpInfoEvt);
+}
+)();

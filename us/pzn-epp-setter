@@ -1,0 +1,78 @@
+
+  (function () {
+    //# sourceURL=pzn-epp-setter
+    function tgtGetCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    function checkForEPP() {
+      //console.log('epp check');
+      clearInterval(eppCheck);
+      if (typeof (tgtGetCookie) == 'function') {
+        var tmkIDcookie = tgtGetCookie('tmktid');
+        var getUserEPP = '';
+        if (tmkIDcookie != "" && getUserEPP !== tmkIDcookie) {
+          adobe.target.trackEvent({
+            "mbox": "target-profile-data",
+            "params": {
+              "user.userEPPValue": tmkIDcookie
+            }
+          });
+          window.adobe && window.adobe.target && window.adobe.target.getOffer({
+            "mbox": "target-profile-update"
+            , "params": {
+              "userEPPValue": tmkIDcookie
+            }
+            , "success": function (offer) {
+              adobe.target.applyOffer({
+                "mbox": "target-profile-update"
+                , "offer": offer
+              });
+              console.log(offer);
+            }
+            , "error": function (status, error) {
+              console.error('Adobe Target - getOffer Error', status, error);
+            }
+          });
+        }
+        
+      }
+
+      var isEppUser = (window.SCart && "function" == typeof window.SCart.isEppUser && window.SCart.isEppUser()) || tgtGetCookie('tppid') != "" || tgtGetCookie('epp_verified') == "true";
+      var setUserValue = '';
+      if (isEppUser && setUserValue !== 'true') {
+        adobe.target.trackEvent({
+          "mbox": "target-profile-data",
+          "params": {
+            "user.userHasEppValue": true
+          }
+        });
+        //console.log('user has tppid');
+      }
+      if (!isEppUser && setUserValue !== 'false') {
+        adobe.target.trackEvent({
+          "mbox": "target-profile_data-24571",
+          "params": {
+            "user.userHasEppValue": false
+          }
+        });
+        //console.log('user has no tppid');
+      }
+    }
+    var eppCheck = window.setInterval(function () {
+      // if ($.cookie){
+      checkForEPP();
+      // }
+    }, 1000, false);
+  })();
